@@ -41,12 +41,28 @@ const postProject = async (req, res, next) => {
 
 const putProject = async (req, res, next) => {
   try {
+    console.log('working so far')
     const { id } = req.params
-    const newProject = await Project(req.body)
-    newProject._id = id
-    const projectUpdated = await Project.findByIdAndUpdate(id, newProject, {
+    const oldProject = await Project.findById(id)
+
+    let skillsToUpdate = []
+    if (req.body.skills.length > 0) {
+      const combinedSkills = oldProject.skills.concat(req.body.skills)
+      skillsToUpdate = [...new Set(combinedSkills)]
+      console.log(skillsToUpdate)
+    } else {
+      skillsToUpdate = oldProject.skills
+    }
+
+    const updatedFields = {
+      ...req.body,
+      skills: skillsToUpdate
+    }
+
+    const projectUpdated = await Project.findByIdAndUpdate(id, updatedFields, {
       new: true
     })
+
     return res.status(200).json(projectUpdated)
   } catch (error) {
     return res.status(400).json('Error in the request')

@@ -10,7 +10,7 @@ const {
 
 const projectsRouter = require('express').Router()
 
-projectsRouter.get('/credits/:credit', [isAuth], getProjectsByCredits)
+projectsRouter.get('/credits/:minimumCredits', [isAuth], getProjectsByCredits)
 projectsRouter.get('/:id', [isAuth], getProjectByID)
 projectsRouter.get('/', [isAuth], getProjects)
 projectsRouter.post('/', [isAdmin], postProject)

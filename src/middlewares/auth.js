@@ -3,8 +3,9 @@ const { verifyJWT } = require('../utils/jwt')
 
 const isAuth = async (req, res, next) => {
   try {
-    const token = req.header.authorization
+    const token = req.headers.authorization
     const parsedToken = token.replace('Bearer ', '')
+
     const { id } = verifyJWT(parsedToken)
     const user = await User.findById(id)
 

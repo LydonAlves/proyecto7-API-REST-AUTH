@@ -14,17 +14,16 @@ const getUsers = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     const newUser = new User({
+      email: req.body.email,
       userName: req.body.userName,
       password: req.body.password,
       rol: 'user'
     })
 
-    const duplicateUser = await User.findOne({ username: req.body.userName })
+    const duplicateUser = await User.findOne({ username: req.body.email })
 
     if (duplicateUser) {
-      return res
-        .status(400)
-        .json('Name in use already, choose a different name')
+      return res.status(400).json('This email address is already registered')
     }
 
     const userSaved = await newUser.save()
